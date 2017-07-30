@@ -27,7 +27,8 @@ public class UserService extends BaseService<User, Long, UserRepository> {
 
 			@Override
 			public Predicate toPredicate(Root<S> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				Predicate predicate = cb.equal(root.get("site").get("id"), user.getSite().getId());
+				// Predicate predicate = cb.equal(root.get("site").get("id"), user.getSite().getId());
+				Predicate predicate = cb.isFalse(root.get("isDeleted"));
 
 				if (null != user.getUsername()) {
 					Predicate ul = cb.like(root.get("username"), "%" + user.getUsername() + "%");
@@ -40,7 +41,7 @@ public class UserService extends BaseService<User, Long, UserRepository> {
 							cb.equal(root.get("userGroup").get("id"), user.getUserGroup().getId()));
 				}
 
-				predicate = cb.and(predicate, cb.isFalse(root.get("isDeleted")));
+				// predicate = cb.and(predicate, cb.isFalse(root.get("isDeleted")));
 
 				return predicate;
 			}

@@ -20,15 +20,23 @@ public class ProductService extends BaseService<Product, Long, ProductJpaReposit
 	public Page<Product> findAll(Product entity, Pageable pageable) {
 		return repository.findAll(getFindAllSpecification(entity), pageable);
 	}
-	
+
 	private Specification<Product> getFindAllSpecification(final Product product) {
 		return new Specification<Product>() {
 
 			@Override
 			public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				return null;
+				Predicate predicate = cb.isFalse(root.get("isDeleted"));
+
+				if (null != product) {
+					if (null != product.getStatus()) {
+						predicate = cb.and(predicate, cb.equal(root.get("status"), product.getStatus()));
+					}
+				}
+
+				return predicate;
 			}
-			
+
 		};
 	}
 }

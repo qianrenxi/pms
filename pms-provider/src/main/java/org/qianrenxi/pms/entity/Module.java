@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
 import org.qianrenxi.core.system.enity.Repairable;
 
 @Entity
@@ -26,6 +27,9 @@ public class Module extends Repairable {
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
+	
+	@Formula("(select count(m.id) from pms_module m where m.parent_id = id and m.is_deleted = 0)")
+	private Long childCount;
 	
 	public Long getId() {
 		return id;
@@ -56,6 +60,12 @@ public class Module extends Repairable {
 	}
 	public void setProduct(Product product) {
 		this.product = product;
+	}
+	public Long getChildCount() {
+		return childCount;
+	}
+	public void setChildCount(Long childCount) {
+		this.childCount = childCount;
 	}
 
 }
