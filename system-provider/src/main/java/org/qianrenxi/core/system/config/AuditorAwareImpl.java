@@ -14,7 +14,8 @@ public class AuditorAwareImpl implements AuditorAware<User> {
 		if(null != principal && principal instanceof UserToken){
 			return ((UserToken) principal).getUser();
 		}else {
-			throw new UnauthenticatedException();
+			// throw new UnauthenticatedException();
+			return null;
 		}
 	}
 	
