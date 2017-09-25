@@ -1,7 +1,7 @@
-package org.qianrenxi.pms.rest;
+package org.qianrenxi.pms.rest.controller;
 
-import org.qianrenxi.pms.entity.Activity;
-import org.qianrenxi.pms.service.ActivityService;
+import org.qianrenxi.pms.entity.Issue;
+import org.qianrenxi.pms.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,39 +12,39 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/activities")
-public class ActivityApiController {
+@RequestMapping("/api/issues")
+public class IssueApiController {
 	
 	@Autowired
-	private ActivityService activityService;
+	private IssueService issueService;
 	
 	@RequestMapping(value="", method = RequestMethod.GET)
-	public Page<Activity> allActivities(Activity activity, Pageable pageable) {
-		Page<Activity> activities = activityService.findAll(activity, pageable);
-		return activities;
+	public Page<Issue> allIssues(Issue issue, Pageable pageable) {
+		Page<Issue> issues = issueService.findAll(issue, pageable);
+		return issues;
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
-	public Activity getOne(@PathVariable("id") Long id) {
-		Activity activity = activityService.findOne(id);
-		return activity;
+	public Issue getOne(@PathVariable("id") Long id) {
+		Issue issue = issueService.findOne(id);
+		return issue;
 	}
 	
 	@RequestMapping(value="", method= RequestMethod.PUT)
-	public Activity create(Activity activity) {
-		activity = activityService.save(activity);
-		return activity;
+	public Issue create(Issue issue) {
+		issue = issueService.save(issue);
+		return issue;
 	}
 	
 	@RequestMapping(value="/{id}", method= RequestMethod.POST)
-	public Activity update(@PathVariable("id") Long id, Activity activity) {
-		activity.setId(id);
-		activity = activityService.save(activity);
-		return activity;
+	public Issue update(@PathVariable("id") Long id, Issue issue) {
+		issue.setId(id);
+		issue = issueService.save(issue);
+		return issue;
 	}
 	
 	@RequestMapping(value="", method= RequestMethod.DELETE)
 	public void update(@RequestParam("ids")Long[] ids) {
-		activityService.delete(ids);
+		issueService.delete(ids);
 	}
 }

@@ -1,7 +1,7 @@
-package org.qianrenxi.pms.rest;
+package org.qianrenxi.pms.rest.controller;
 
-import org.qianrenxi.pms.entity.Issue;
-import org.qianrenxi.pms.service.IssueService;
+import org.qianrenxi.pms.entity.Plan;
+import org.qianrenxi.pms.service.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,39 +12,39 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/issues")
-public class IssueApiController {
+@RequestMapping("/api/plans")
+public class PlanApiController {
 	
 	@Autowired
-	private IssueService issueService;
+	private PlanService planService;
 	
 	@RequestMapping(value="", method = RequestMethod.GET)
-	public Page<Issue> allIssues(Issue issue, Pageable pageable) {
-		Page<Issue> issues = issueService.findAll(issue, pageable);
-		return issues;
+	public Page<Plan> allPlans(Plan plan, Pageable pageable) {
+		Page<Plan> plans = planService.findAll(plan, pageable);
+		return plans;
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
-	public Issue getOne(@PathVariable("id") Long id) {
-		Issue issue = issueService.findOne(id);
-		return issue;
+	public Plan getOne(@PathVariable("id") Long id) {
+		Plan plan = planService.findOne(id);
+		return plan;
 	}
 	
 	@RequestMapping(value="", method= RequestMethod.PUT)
-	public Issue create(Issue issue) {
-		issue = issueService.save(issue);
-		return issue;
+	public Plan create(Plan plan) {
+		plan = planService.save(plan);
+		return plan;
 	}
 	
 	@RequestMapping(value="/{id}", method= RequestMethod.POST)
-	public Issue update(@PathVariable("id") Long id, Issue issue) {
-		issue.setId(id);
-		issue = issueService.save(issue);
-		return issue;
+	public Plan update(@PathVariable("id") Long id, Plan plan) {
+		plan.setId(id);
+		plan = planService.save(plan);
+		return plan;
 	}
 	
 	@RequestMapping(value="", method= RequestMethod.DELETE)
 	public void update(@RequestParam("ids")Long[] ids) {
-		issueService.delete(ids);
+		planService.delete(ids);
 	}
 }

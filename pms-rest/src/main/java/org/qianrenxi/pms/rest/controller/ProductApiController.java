@@ -1,4 +1,4 @@
-package org.qianrenxi.pms.rest;
+package org.qianrenxi.pms.rest.controller;
 
 import org.qianrenxi.pms.entity.Product;
 import org.qianrenxi.pms.service.ProductService;

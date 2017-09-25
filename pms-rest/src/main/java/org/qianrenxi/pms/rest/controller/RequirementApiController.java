@@ -1,4 +1,4 @@
-package org.qianrenxi.pms.rest;
+package org.qianrenxi.pms.rest.controller;
 
 import java.util.Map;
 

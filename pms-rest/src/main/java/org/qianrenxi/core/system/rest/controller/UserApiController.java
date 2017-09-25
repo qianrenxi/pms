@@ -1,4 +1,4 @@
-package org.qianrenxi.core.system.rest;
+package org.qianrenxi.core.system.rest.controller;
 
 import org.qianrenxi.core.system.enity.User;
 import org.qianrenxi.core.system.service.UserService;
