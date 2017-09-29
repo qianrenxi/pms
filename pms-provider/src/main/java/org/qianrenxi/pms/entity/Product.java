@@ -29,6 +29,12 @@ public class Product extends Repairable {
 		CLOSED
 	}
 	
+	public enum AccessControl {
+		PUBLIC,
+		PRIVATE,
+		CUSTOM
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
@@ -40,6 +46,8 @@ public class Product extends Repairable {
 	private ProductType type;
 	@Enumerated(EnumType.STRING)
 	private ProductStatus status;
+	@Enumerated(EnumType.STRING)
+	private AccessControl accessControl;
 	
 	@ManyToOne
 	@JoinColumn(name="product_leader_id")
@@ -104,5 +112,11 @@ public class Product extends Repairable {
 	}
 	public void setPublishLeader(User publishLeader) {
 		this.publishLeader = publishLeader;
+	}
+	public AccessControl getAccessControl() {
+		return accessControl;
+	}
+	public void setAccessControl(AccessControl accessControl) {
+		this.accessControl = accessControl;
 	}
 }
