@@ -16,5 +16,9 @@ public class ModuleService extends BaseService<Module, Long, ModuleJpaRepository
 	
 	public List<Module> getChildren(Long parentId) {
 		return repository.findChildren(parentId);
-	} 
+	}
+	
+	public List<Module> findAllByProduct(Long productId) {
+		return repository.findAllByProduct(productId);
+	}
 }

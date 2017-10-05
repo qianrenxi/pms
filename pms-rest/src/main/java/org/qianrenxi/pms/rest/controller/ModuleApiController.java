@@ -20,7 +20,7 @@ public class ModuleApiController {
 	private ModuleService moduleService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<Module> allModules(@RequestParam(name = "product.id") Long productId,
+	public List<Module> modules(@RequestParam(name = "product.id") Long productId,
 			@RequestParam(name = "parent.id", required = false) Long parentId) {
 		if (parentId != null) {
 			return moduleService.getChildren(parentId);

@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.qianrenxi.core.system.enity.Repairable;
+import org.qianrenxi.core.system.enity.User;
 
 @Entity
 @Table(name = "pms_requirement")
@@ -18,7 +19,42 @@ public class Requirement extends Repairable {
 	private static final long serialVersionUID = -5111651626634922283L;
 
 	public enum RequirementStage {
-		WAIT, PLANNED, PROJECTED, DEVELOPING, DEVELOPED, TESTING, TESTED, VERIFIED, RELEASED
+		/**
+		 * 未开始
+		 */
+		WAIT,
+		/**
+		 * 已计划
+		 */
+		PLANNED,
+		/**
+		 * 已立项
+		 */
+		PROJECTED,
+		/**
+		 * 开发中
+		 */
+		DEVELOPING,
+		/**
+		 * 开发完成
+		 */
+		DEVELOPED,
+		/**
+		 * 测试中
+		 */
+		TESTING,
+		/**
+		 * 测试完成
+		 */
+		TESTED,
+		/**
+		 * 已验收
+		 */
+		VERIFIED,
+		/**已发布
+		 * 
+		 */
+		RELEASED
 	}
 
 	public enum RequirementStatus {
@@ -40,24 +76,24 @@ public class Requirement extends Repairable {
 		CHANGED
 	}
 
-	public enum RequirementReviewResult {
-		/**
-		 * 通过
-		 */
-		PASS,
-		/**
-		 * 需求重复、重提
-		 */
-		REVERT,
-		/**
-		 * 待明确
-		 */
-		CLARIFY,
-		/**
-		 * 拒绝
-		 */
-		REJECT
-	}
+//	public enum RequirementReviewResult {
+//		/**
+//		 * 通过
+//		 */
+//		PASS,
+//		/**
+//		 * 需求重复、重提、 变更回滚
+//		 */
+//		REVERT,
+//		/**
+//		 * 待明确
+//		 */
+//		CLARIFY,
+//		/**
+//		 * 拒绝
+//		 */
+//		REJECT
+//	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -67,6 +103,7 @@ public class Requirement extends Repairable {
 	private Float estimate;
 	private String acceptance;
 	private String keywords;
+	private Integer version;
 
 	// 动态可配置属性
 	private Integer priority;
@@ -78,8 +115,9 @@ public class Requirement extends Repairable {
 	private RequirementStage stage;
 	@Enumerated(EnumType.STRING)
 	private RequirementStatus status;
-	@Enumerated(EnumType.STRING)
-	private RequirementReviewResult reviewResult;
+//	@Enumerated(EnumType.STRING)
+//	private RequirementReviewResult reviewResult;
+	private Boolean needReview;
 
 	@ManyToOne
 	@JoinColumn(name = "product_id")
@@ -90,6 +128,9 @@ public class Requirement extends Repairable {
 	@ManyToOne
 	@JoinColumn(name = "plan_id")
 	private Plan plan;
+	@ManyToOne
+	@JoinColumn(name = "assign_to")
+	private User assignTo;
 
 	public Long getId() {
 		return id;
@@ -187,13 +228,13 @@ public class Requirement extends Repairable {
 		this.status = status;
 	}
 
-	public RequirementReviewResult getReviewResult() {
-		return reviewResult;
-	}
+//	public RequirementReviewResult getReviewResult() {
+//		return reviewResult;
+//	}
 
-	public void setReviewResult(RequirementReviewResult reviewResult) {
-		this.reviewResult = reviewResult;
-	}
+//	public void setReviewResult(RequirementReviewResult reviewResult) {
+//		this.reviewResult = reviewResult;
+//	}
 
 	public Product getProduct() {
 		return product;
@@ -217,6 +258,30 @@ public class Requirement extends Repairable {
 
 	public void setPlan(Plan plan) {
 		this.plan = plan;
+	}
+
+	public User getAssignTo() {
+		return assignTo;
+	}
+
+	public void setAssignTo(User assignTo) {
+		this.assignTo = assignTo;
+	}
+
+	public Boolean getNeedReview() {
+		return needReview;
+	}
+
+	public void setNeedReview(Boolean needReview) {
+		this.needReview = needReview;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }

@@ -14,4 +14,7 @@ public interface ModuleJpaRepository extends SupportRepository<Module, Long> {
 	
 	@Query("select m from Module m where m.parent.id = :parentId and m.isDeleted = 0")
 	List<Module> findChildren(@Param("parentId")Long parentId);
+	
+	@Query("select m from Module m where m.product.id = :productId and m.isDeleted = 0")
+	List<Module> findAllByProduct(@Param("productId")Long productId);
 }

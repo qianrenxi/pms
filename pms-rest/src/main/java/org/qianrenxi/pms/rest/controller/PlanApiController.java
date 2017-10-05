@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,7 +32,7 @@ public class PlanApiController {
 	}
 	
 	@RequestMapping(value="", method= RequestMethod.PUT)
-	public Plan create(Plan plan) {
+	public Plan create(@RequestBody() Plan plan) {
 		plan = planService.save(plan);
 		return plan;
 	}

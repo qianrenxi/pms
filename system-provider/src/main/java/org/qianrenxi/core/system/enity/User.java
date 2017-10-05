@@ -60,6 +60,16 @@ public class User extends Repairable {
 	@ManyToOne
 	@JoinColumn(name = "user_group_id")
 	private UserGroup userGroup;
+	
+	public User() {}
+	
+	public User(Long id) {
+		this.id = id;
+	}
+	
+	public User(String username) {
+		this.username = username;
+	}
 
 	public Long getId() {
 		return id;

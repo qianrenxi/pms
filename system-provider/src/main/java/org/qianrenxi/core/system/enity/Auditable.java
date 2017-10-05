@@ -3,6 +3,7 @@ package org.qianrenxi.core.system.enity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.EntityListeners;
 import javax.persistence.ForeignKey;
@@ -34,19 +35,20 @@ public abstract class Auditable implements Serializable {
 
 	@CreatedBy
 	@ManyToOne
-	@JoinColumn(name = "created_by", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
+	@JoinColumn(name = "created_by", updatable = false, foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
 	protected User createdBy;
 	@CreatedDate
-	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")  
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@Column(name = "created_date", updatable = false)
 	protected Date createdDate;
 	@LastModifiedBy
 	@ManyToOne
 	@JoinColumn(name = "last_modified_by", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
 	protected User lastModifiedBy;
 	@LastModifiedDate
-	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")  
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	protected Date lastModifiedDate;
 
 	public User getCreatedBy() {

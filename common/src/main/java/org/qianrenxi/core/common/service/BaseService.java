@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.List;
 
+import org.javers.spring.annotation.JaversAuditable;
 import org.qianrenxi.core.common.entity.Repairable;
 import org.qianrenxi.core.common.repository.SupportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,13 @@ public class BaseService<T, ID extends Serializable, R extends SupportRepository
 	}
 
 	@Override
+	@JaversAuditable
 	public <S extends T> S save(S entity) {
 		return repository.saveAndFlush(entity);
 	}
 
 	@Override
+	@JaversAuditable
 	public <S extends T> Iterable<S> save(Iterable<S> entities) {
 		return repository.save(entities);
 	}
@@ -111,6 +114,7 @@ public class BaseService<T, ID extends Serializable, R extends SupportRepository
 	}
 
 	@Override
+	@JaversAuditable
 	public void delete(ID id, boolean isPhysical) {
 		if (isReparable && !isPhysical) {
 			tagDelete(id);
@@ -132,6 +136,7 @@ public class BaseService<T, ID extends Serializable, R extends SupportRepository
 	}
 
 	@Override
+	@JaversAuditable
 	public void delete(T entity, boolean isPhysical) {
 		if (isReparable && !isPhysical) {
 			tagDelete(entity);
@@ -141,6 +146,7 @@ public class BaseService<T, ID extends Serializable, R extends SupportRepository
 	}
 
 	@Override
+	@JaversAuditable
 	public void delete(Iterable<? extends T> entities, boolean isPhysical) {
 		if (isReparable && !isPhysical) {
 			for (T entity : entities) {

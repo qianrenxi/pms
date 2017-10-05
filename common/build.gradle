@@ -22,6 +22,9 @@ dependencies {
 	// 日期社交化显示
 	compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
 	
+	// Dto util
+	compile 'org.modelmapper:modelmapper:1.0.0'
+	
 	//poi
 	compile 'org.apache.poi:poi:3.14'
 	compile 'org.apache.poi:poi-scratchpad:3.14'
@@ -35,6 +38,9 @@ dependencies {
 	
 	// https://mvnrepository.com/artifact/com.alibaba/fastjson
 	compile ('com.alibaba:fastjson:1.2.31')
+
+	// Object auditing and diff framework for Java
+	compile 'org.javers:javers-spring-boot-starter-sql:3.5.1'
 
 	
 	runtime('com.h2database:h2')

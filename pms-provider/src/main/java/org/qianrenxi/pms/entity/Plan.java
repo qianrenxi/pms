@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.qianrenxi.core.system.enity.Repairable;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="pms_plan")
@@ -22,7 +23,9 @@ public class Plan extends Repairable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String name;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 	private String description;
 	@ManyToOne
