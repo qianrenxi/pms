@@ -24,6 +24,10 @@ public class RequirementSpecification {
 				if (null != requirement.getName()) {
 					predicate = cb.and(predicate, cb.like(root.get("name"), "%" + requirement.getName() + "%"));
 				}
+				
+				if (null != requirement.getStatus()) {
+					predicate = cb.and(predicate, cb.equal(root.get("status"), requirement.getStatus()));
+				}
 
 				return predicate;
 			}

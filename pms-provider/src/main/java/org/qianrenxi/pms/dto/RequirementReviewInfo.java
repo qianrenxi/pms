@@ -2,7 +2,7 @@ package org.qianrenxi.pms.dto;
 
 import java.util.Date;
 
-public class ReviewInfo {
+public class RequirementReviewInfo {
 	
 	public enum ReviewResult {
 		/**

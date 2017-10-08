@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.javers.core.Javers;
 import org.javers.core.changelog.SimpleTextChangeLog;
 import org.javers.core.diff.Change;
@@ -16,7 +17,7 @@ import org.javers.core.diff.Diff;
 import org.javers.repository.jql.QueryBuilder;
 import org.qianrenxi.core.common.service.BaseService;
 import org.qianrenxi.core.system.enity.User;
-import org.qianrenxi.pms.dto.ReviewInfo;
+import org.qianrenxi.pms.dto.RequirementReviewInfo;
 import org.qianrenxi.pms.entity.Requirement;
 import org.qianrenxi.pms.entity.Requirement.RequirementStage;
 import org.qianrenxi.pms.entity.Requirement.RequirementStatus;
@@ -148,6 +149,7 @@ public class RequirementService extends BaseService<Requirement, Long, Requireme
 
 	/**
 	 * 更新、修改基本信息
+	 * 
 	 * @param requirement
 	 * @param user
 	 * @param remark
@@ -171,7 +173,7 @@ public class RequirementService extends BaseService<Requirement, Long, Requireme
 	 * @param reviewInfo
 	 * @param user
 	 */
-	public void review(Long id, ReviewInfo reviewInfo, User user) {
+	public void review(Long id, RequirementReviewInfo reviewInfo, User user) {
 		Requirement requirement = getOne(id);
 		switch (reviewInfo.getReviewedResult()) {
 		case PASS: // 通过
@@ -261,6 +263,52 @@ public class RequirementService extends BaseService<Requirement, Long, Requireme
 	}
 
 	/**
+	 * 立项
+	 * 
+	 * @param id
+	 * @param remark
+	 * @param user
+	 */
+	public void projection(Long id, String remark, User user) {
+		Requirement requirement = getOne(id);
+		if (null == requirement.getStage() || requirement.getStage().equals(RequirementStage.WAIT)
+				|| requirement.getStage().equals(RequirementStage.PLANNED)) {
+			requirement.setStage(RequirementStage.PROJECTED);
+			save(requirement);
+			
+			remark = StringUtils.isEmpty(remark) ? "" : remark;
+			javers.commit(user.getUsername(), requirement,
+					ImmutableMap.of("actions", "PROJECTION", "comment", remark));
+		}
+	}
+
+	/**
+	 * 取消立项
+	 * 
+	 * @param id
+	 * @param remark
+	 * @param user
+	 */
+	public void disProjection(Long id, String remark, User user) {
+		Requirement requirement = getOne(id);
+		if (null != requirement.getStage() && requirement.getStage().equals(RequirementStage.PROJECTED)) {
+			
+			// TODO: 验证多项目关联的情况
+			
+			if(requirement.getPlan() != null) {
+				requirement.setStage(RequirementStage.PLANNED);
+			} else {
+				requirement.setStage(RequirementStage.WAIT);
+			}
+			save(requirement);
+			
+			remark = StringUtils.isEmpty(remark) ? "" : remark;
+			javers.commit(user.getUsername(), requirement,
+					ImmutableMap.of("actions", "DISPROJECTION", "unInitiation", remark));
+		}
+	}
+
+	/**
 	 * 按产品查询需求
 	 * 
 	 * @param productId
@@ -305,24 +353,27 @@ public class RequirementService extends BaseService<Requirement, Long, Requireme
 	 */
 	public Map<String, Requirement> findNear(Long id) {
 		Requirement self = findOne(id);
-		Requirement prev = findPrev(id, self.getProduct().getId());
-		Requirement next = findNext(id, self.getProduct().getId());
+		if (null != self && null != self.getProduct()) {
+			Requirement prev = findPrev(id, self.getProduct().getId());
+			Requirement next = findNext(id, self.getProduct().getId());
 
-		Map<String, Requirement> near = new HashMap<>();
-		near.put("prev", prev);
-		near.put("next", next);
+			Map<String, Requirement> near = new HashMap<>();
+			near.put("prev", prev);
+			near.put("next", next);
 
-		return near;
+			return near;
+		}
+		return ImmutableMap.of();
 	}
-	
+
 	/**
 	 * 更新日志
+	 * 
 	 * @param id
 	 * @return
 	 */
 	public String changeLog(Long id) {
-		List<Change> changes = javers.findChanges(
-	            QueryBuilder.byInstanceId(id, Requirement.class).build());
+		List<Change> changes = javers.findChanges(QueryBuilder.byInstanceId(id, Requirement.class).build());
 		String changeLog = javers.processChangeList(changes, new SimpleTextChangeLog());
 		return changeLog;
 	}

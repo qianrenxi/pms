@@ -12,7 +12,7 @@ import org.qianrenxi.core.system.annotation.CurrentUser;
 import org.qianrenxi.core.system.security.UserToken;
 import org.qianrenxi.pms.dto.RequirementDto;
 import org.qianrenxi.pms.dto.RequirementSpecDto;
-import org.qianrenxi.pms.dto.ReviewInfo;
+import org.qianrenxi.pms.dto.RequirementReviewInfo;
 import org.qianrenxi.pms.entity.Requirement;
 import org.qianrenxi.pms.entity.RequirementSpec;
 import org.qianrenxi.pms.entity.RequirementSpecPK;
@@ -21,6 +21,7 @@ import org.qianrenxi.pms.service.RequirementSpecService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,14 @@ public class RequirementApiController {
 
 	@Autowired
 	private RequirementSpecService requirementSpecService;
+
+	@ModelAttribute("requirementForUpdate")
+	public Requirement requirementForUpdate(@RequestParam(name = "id", required = false) Long id) {
+		if (null != id) {
+			return requirementService.findOne(id);
+		}
+		return new Requirement();
+	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Page<RequirementDto> allRequirements(Requirement requirement, Pageable pageable) {
@@ -65,7 +74,8 @@ public class RequirementApiController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public RequirementDto update(@PathVariable("id") Long id, Requirement requirement,
+	public RequirementDto update(@PathVariable("id") Long id,
+			@ModelAttribute("requirementForUpdate") Requirement requirement,
 			@RequestParam(name = "remark", required = false) String remark, @CurrentUser() UserToken userToken) {
 		requirement.setId(id);
 		requirement = requirementService.update(requirement, userToken.getUser(), remark);
@@ -141,7 +151,8 @@ public class RequirementApiController {
 	 * @param userToken
 	 */
 	@RequestMapping(value = "/{id}/review", method = RequestMethod.POST)
-	public void review(@PathVariable("id") Long id, ReviewInfo reviewInfo, @CurrentUser() UserToken userToken) {
+	public void review(@PathVariable("id") Long id, RequirementReviewInfo reviewInfo,
+			@CurrentUser() UserToken userToken) {
 		requirementService.review(id, reviewInfo, userToken.getUser());
 	}
 
@@ -161,6 +172,7 @@ public class RequirementApiController {
 
 	/**
 	 * 添加备注、评论
+	 * 
 	 * @param id
 	 * @param remark
 	 * @param userToken
@@ -170,14 +182,15 @@ public class RequirementApiController {
 			@CurrentUser() UserToken userToken) {
 		requirementService.remark(id, remark, userToken.getUser());
 	}
-	
+
 	/**
 	 * 更新日志
+	 * 
 	 * @param id
 	 * @return
 	 */
 	@RequestMapping(value = "/{id}/changeLog", method = RequestMethod.GET)
-	public Map<String, ?> changeLog(@PathVariable("id") Long id){
+	public Map<String, ?> changeLog(@PathVariable("id") Long id) {
 		return ImmutableMap.of("changeLog", requirementService.changeLog(id));
-	} 
+	}
 }

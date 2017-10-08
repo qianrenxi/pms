@@ -5,6 +5,7 @@ import java.util.List;
 import org.qianrenxi.pms.entity.Module;
 import org.qianrenxi.pms.service.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,14 @@ public class ModuleApiController {
 
 	@Autowired
 	private ModuleService moduleService;
+
+	@ModelAttribute("moduleForUpdate")
+	public Module moduleForUpdate(@RequestParam(name = "id", required = false) Long id) {
+		if (null != id) {
+			return moduleService.findOne(id);
+		}
+		return new Module();
+	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<Module> modules(@RequestParam(name = "product.id") Long productId,
@@ -42,7 +51,7 @@ public class ModuleApiController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public Module update(@PathVariable("id") Long id, Module module) {
+	public Module update(@PathVariable("id") Long id, @ModelAttribute("moduleForUpdate") Module module) {
 		module.setId(id);
 		module = moduleService.save(module);
 		return module;

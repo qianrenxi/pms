@@ -56,7 +56,30 @@ public class Task extends Repairable {
 	}
 
 	public enum TaskStatus {
-		NOT_STARTED, GOING, FINISHED, CLOSED
+		/**
+		 * 未开始
+		 */
+		INITIAL,
+		/**
+		 * 进行中
+		 */
+		GOING,
+		/**
+		 * 已完成
+		 */
+		COMPLETED,
+		/**
+		 * 已暂停、挂起
+		 */
+		PAUSED,
+		/**
+		 * 已取消
+		 */
+		CANCELED,
+		/**
+		 * 已关闭
+		 */
+		CLOSED
 	}
 
 	@Id
@@ -91,11 +114,14 @@ public class Task extends Repairable {
 	private Requirement requirement;
 
 	@ManyToOne
-	private User finishedBy;
+	private User completedBy;
+	private Date completedDate;
 	@ManyToOne
-	private User caceledBy;
+	private User canceledBy;
+	private Date canceledDate;
 	@ManyToOne
 	private User closedBy;
+	private Date closedDate;
 	private String closeReason;
 
 	public Long getId() {
@@ -226,20 +252,36 @@ public class Task extends Repairable {
 		this.requirement = requirement;
 	}
 
-	public User getFinishedBy() {
-		return finishedBy;
+	public User getCompletedBy() {
+		return completedBy;
 	}
 
-	public void setFinishedBy(User finishedBy) {
-		this.finishedBy = finishedBy;
+	public void setCompletedBy(User completedBy) {
+		this.completedBy = completedBy;
 	}
 
-	public User getCaceledBy() {
-		return caceledBy;
+	public Date getCompletedDate() {
+		return completedDate;
 	}
 
-	public void setCaceledBy(User caceledBy) {
-		this.caceledBy = caceledBy;
+	public void setCompletedDate(Date completedDate) {
+		this.completedDate = completedDate;
+	}
+
+	public User getCanceledBy() {
+		return canceledBy;
+	}
+
+	public void setCanceledBy(User canceledBy) {
+		this.canceledBy = canceledBy;
+	}
+
+	public Date getCanceledDate() {
+		return canceledDate;
+	}
+
+	public void setCanceledDate(Date canceledDate) {
+		this.canceledDate = canceledDate;
 	}
 
 	public User getClosedBy() {
@@ -250,6 +292,14 @@ public class Task extends Repairable {
 		this.closedBy = closedBy;
 	}
 
+	public Date getClosedDate() {
+		return closedDate;
+	}
+
+	public void setClosedDate(Date closedDate) {
+		this.closedDate = closedDate;
+	}
+
 	public String getCloseReason() {
 		return closeReason;
 	}
@@ -257,4 +307,6 @@ public class Task extends Repairable {
 	public void setCloseReason(String closeReason) {
 		this.closeReason = closeReason;
 	}
+
+	
 }

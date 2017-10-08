@@ -1,6 +1,6 @@
 package org.qianrenxi.pms.entity;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.qianrenxi.core.system.enity.Repairable;
+import org.qianrenxi.core.system.enity.User;
 
 @Entity
 @Table(name = "pms_project")
@@ -23,11 +24,38 @@ public class Project extends Repairable {
 		/**
 		 * 研发
 		 */
-		RESEARCH_AND_DEVELOPING,
+		DEVELOPING,
 		/**
 		 * 实施
 		 */
-		IMPLEMENT
+		IMPLEMENT,
+		/**
+		 * 运维
+		 */
+		OPERATIONS
+	}
+	
+	public enum ProjectStatus {
+		/**
+		 * 未开始
+		 */
+		WAIT,
+		/**
+		 * 进行中
+		 */
+		GOING,
+		/**
+		 * 已完成
+		 */
+		COMPLETE,
+		/**
+		 * 已延期
+		 */
+		DELAY,
+		/**
+		 * 已挂起
+		 */
+		PAUSE
 	}
 
 	@Id
@@ -44,10 +72,15 @@ public class Project extends Repairable {
 
 	@Enumerated(EnumType.STRING)
 	private ProjectType type;
+	@Enumerated(EnumType.STRING)
+	private ProjectStatus status;
 
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
+	@ManyToOne
+	@JoinColumn(name="project_leader_id")
+	private User projectLeader;
 
 	public Long getId() {
 		return id;
@@ -127,6 +160,22 @@ public class Project extends Repairable {
 
 	public void setProduct(Product product) {
 		this.product = product;
+	}
+
+	public ProjectStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ProjectStatus status) {
+		this.status = status;
+	}
+
+	public User getProjectLeader() {
+		return projectLeader;
+	}
+
+	public void setProjectLeader(User projectLeader) {
+		this.projectLeader = projectLeader;
 	}
 
 }
