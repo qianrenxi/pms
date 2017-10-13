@@ -1,6 +1,8 @@
 package org.qianrenxi.pms.entity;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -41,7 +43,8 @@ public class TestCase extends Repairable {
 	@ElementCollection
 	@CollectionTable(name = "pms_test_case_step")
 	@OrderBy("step DESC")
-	private Set<TestCaseStep> steps = new LinkedHashSet<>();
+	// private Set<TestCaseStep> steps = new LinkedHashSet<>();
+	private List<TestCaseStep> steps = new ArrayList<>();
 
 	// Attributes
 	/** 优先级 */
@@ -103,16 +106,24 @@ public class TestCase extends Repairable {
 		this.requirement = requirement;
 	}
 
-	public Set<TestCaseStep> getSteps() {
+/*	public Set<TestCaseStep> getSteps() {
 		return steps;
 	}
 
 	public void setSteps(Set<TestCaseStep> steps) {
 		this.steps = steps;
-	}
+	}*/
 
 	public Integer getPriority() {
 		return priority;
+	}
+
+	public List<TestCaseStep> getSteps() {
+		return steps;
+	}
+
+	public void setSteps(List<TestCaseStep> steps) {
+		this.steps = steps;
 	}
 
 	public void setPriority(Integer priority) {

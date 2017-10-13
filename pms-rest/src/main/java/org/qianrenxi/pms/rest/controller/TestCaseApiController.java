@@ -1,12 +1,12 @@
 package org.qianrenxi.pms.rest.controller;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.TypeToken;
 import org.qianrenxi.core.common.utils.ModelMapperUtils;
 import org.qianrenxi.pms.dto.TestCaseDto;
-import org.qianrenxi.pms.dto.TestTaskDto;
 import org.qianrenxi.pms.entity.TestCase;
 import org.qianrenxi.pms.service.TestCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,10 @@ public class TestCaseApiController {
 	@ModelAttribute("testCaseForUpdate")
 	public TestCase testCaseForUpdate(@RequestParam(name = "id", required = false) Long id) {
 		if (null != id) {
-			return testCaseService.findOne(id);
+			TestCase testCase = testCaseService.findOne(id);
+			// testCase.setSteps(new LinkedHashSet<>());
+			testCase.setSteps(new ArrayList<>());
+			return testCase;
 		}
 		return new TestCase();
 	}
