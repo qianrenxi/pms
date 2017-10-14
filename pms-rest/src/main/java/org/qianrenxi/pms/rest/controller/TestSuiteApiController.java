@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/rest/suites")
+@RequestMapping("/api/test/suites")
 public class TestSuiteApiController {
 	@Autowired
 	private TestSuiteService testSuiteService;
