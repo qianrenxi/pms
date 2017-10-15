@@ -13,7 +13,6 @@ import org.qianrenxi.pms.repository.jpa.ProjectJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 @Service
@@ -29,7 +28,7 @@ public class ProjectService extends BaseService<Project, Long, ProjectJpaReposit
 	 * @return
 	 */
 	public List<Project> findAllByProduct(Long productId) {
-		return ImmutableList.of();
+		return repository.findByProductId(productId);
 	}
 
 	/**

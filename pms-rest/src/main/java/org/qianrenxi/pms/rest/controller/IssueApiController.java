@@ -1,5 +1,11 @@
 package org.qianrenxi.pms.rest.controller;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
+import org.modelmapper.TypeToken;
+import org.qianrenxi.core.common.utils.ModelMapperUtils;
+import org.qianrenxi.pms.dto.IssueDto;
 import org.qianrenxi.pms.entity.Issue;
 import org.qianrenxi.pms.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,28 +35,30 @@ public class IssueApiController {
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Page<Issue> allIssues(Issue issue, Pageable pageable) {
+	public Page<IssueDto> allIssues(Issue issue, Pageable pageable) {
 		Page<Issue> issues = issueService.findAll(issue, pageable);
-		return issues;
+		
+		Type type = new TypeToken<List<IssueDto>>() {}.getType();
+		return ModelMapperUtils.map(issues, type, pageable);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public Issue getOne(@PathVariable("id") Long id) {
+	public IssueDto getOne(@PathVariable("id") Long id) {
 		Issue issue = issueService.findOne(id);
-		return issue;
+		return ModelMapperUtils.map(issue, IssueDto.class);
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.PUT)
-	public Issue create(@RequestBody() Issue issue) {
+	public IssueDto create(@RequestBody() Issue issue) {
 		issue = issueService.save(issue);
-		return issue;
+		return ModelMapperUtils.map(issue, IssueDto.class);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public Issue update(@PathVariable("id") Long id, @ModelAttribute("issueForUpdate") Issue issue) {
+	public IssueDto update(@PathVariable("id") Long id, @ModelAttribute("issueForUpdate") Issue issue) {
 		issue.setId(id);
 		issue = issueService.save(issue);
-		return issue;
+		return ModelMapperUtils.map(issue, IssueDto.class);
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.DELETE)
