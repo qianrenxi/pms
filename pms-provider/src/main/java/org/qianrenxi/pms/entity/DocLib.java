@@ -18,6 +18,7 @@ public class DocLib extends Repairable {
 	@GeneratedValue
 	private Long id;
 	private String name;
+	private String code;
 	
 	@ManyToOne()
 	@JoinColumn(name="product_id")
@@ -49,6 +50,12 @@ public class DocLib extends Repairable {
 	}
 	public void setProject(Project project) {
 		this.project = project;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 }

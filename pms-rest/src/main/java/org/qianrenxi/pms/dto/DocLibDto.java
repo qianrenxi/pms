@@ -5,6 +5,7 @@ import java.util.Date;
 public class DocLibDto {
 	private Long id;
 	private String name;
+	private String code;
 
 	// private Product product;
 	private Long productId;
@@ -136,5 +137,13 @@ public class DocLibDto {
 
 	public void setLastModifiedDate(Date lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 }

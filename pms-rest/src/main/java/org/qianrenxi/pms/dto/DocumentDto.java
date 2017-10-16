@@ -8,6 +8,7 @@ public class DocumentDto {
 	private String name;
 	private String keyword;
 	private String format;
+	private String originalContent;
 	private String content;
 	// TODO: attachments
 	// TODO: accessControl
@@ -117,5 +118,11 @@ public class DocumentDto {
 	}
 	public void setLastModifiedDate(Date lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
+	}
+	public String getOriginalContent() {
+		return originalContent;
+	}
+	public void setOriginalContent(String originalContent) {
+		this.originalContent = originalContent;
 	}
 }

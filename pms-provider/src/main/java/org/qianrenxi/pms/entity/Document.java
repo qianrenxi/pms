@@ -23,6 +23,8 @@ public class Document extends Repairable {
 	private String keyword;
 	private String format;
 	@Lob
+	private String originalContent;
+	@Lob
 	private String content;
 	// TODO: attachments
 	// TODO: accessControl
@@ -77,5 +79,13 @@ public class Document extends Repairable {
 
 	public void setDocLib(DocLib docLib) {
 		this.docLib = docLib;
+	}
+
+	public String getOriginalContent() {
+		return originalContent;
+	}
+
+	public void setOriginalContent(String originalContent) {
+		this.originalContent = originalContent;
 	}
 }
