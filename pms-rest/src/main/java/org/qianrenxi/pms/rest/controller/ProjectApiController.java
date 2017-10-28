@@ -3,18 +3,23 @@ package org.qianrenxi.pms.rest.controller;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.modelmapper.TypeToken;
 import org.qianrenxi.core.common.utils.ModelMapperUtils;
 import org.qianrenxi.core.system.annotation.CurrentUser;
 import org.qianrenxi.core.system.security.UserToken;
 import org.qianrenxi.pms.dto.BuildDto;
+import org.qianrenxi.pms.dto.DocLibDto;
 import org.qianrenxi.pms.dto.ProjectDelayInfo;
 import org.qianrenxi.pms.dto.ProjectDto;
 import org.qianrenxi.pms.dto.TaskDto;
 import org.qianrenxi.pms.entity.Build;
+import org.qianrenxi.pms.entity.DocLib;
+import org.qianrenxi.pms.entity.Product;
 import org.qianrenxi.pms.entity.Project;
 import org.qianrenxi.pms.entity.Task;
 import org.qianrenxi.pms.service.BuildService;
+import org.qianrenxi.pms.service.DocLibService;
 import org.qianrenxi.pms.service.ProjectService;
 import org.qianrenxi.pms.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +33,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.ImmutableList;
+
 @RestController
 @RequestMapping("/api/projects")
 public class ProjectApiController {
@@ -40,6 +47,9 @@ public class ProjectApiController {
 
 	@Autowired
 	private BuildService buildService;
+	
+	@Autowired
+	private DocLibService docLibService;
 
 	private Type getListDtoType() {
 		return new TypeToken<List<ProjectDto>>() {
@@ -161,5 +171,30 @@ public class ProjectApiController {
 		Type type = new TypeToken<List<BuildDto>>() {
 		}.getType();
 		return ModelMapperUtils.map(builds, type);
+	}
+	
+	/**
+	 * 项目文档库
+	 * @param productId
+	 * @return
+	 */
+	@RequestMapping(value = "/{id}/docLibs", method = RequestMethod.GET)
+	public List<DocLibDto> docLibs(@PathVariable("id") Long projectId) {
+		List<DocLib> docLibs = docLibService.findByProject(projectId);
+		
+		if (CollectionUtils.isEmpty(docLibs)){
+			Project project = new Project();
+			project.setId(projectId);
+			DocLib docLib = new DocLib();
+			docLib.setCode("project-lib-"+projectId);
+			docLib.setName("项目主库");
+			docLib.setProject(project);
+			docLibService.save(docLib);
+			docLibs = ImmutableList.of(docLib);
+		}
+		
+		Type type = new TypeToken<List<DocLibDto>>() {
+		}.getType();
+		return ModelMapperUtils.map(docLibs, type);
 	}
 }

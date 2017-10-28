@@ -4,20 +4,24 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.modelmapper.TypeToken;
 import org.qianrenxi.core.common.utils.ModelMapperUtils;
 import org.qianrenxi.pms.dto.BuildDto;
+import org.qianrenxi.pms.dto.DocLibDto;
 import org.qianrenxi.pms.dto.ModuleDto;
 import org.qianrenxi.pms.dto.PlanDto;
 import org.qianrenxi.pms.dto.ProjectDto;
 import org.qianrenxi.pms.dto.RequirementDto;
 import org.qianrenxi.pms.entity.Build;
+import org.qianrenxi.pms.entity.DocLib;
 import org.qianrenxi.pms.entity.Module;
 import org.qianrenxi.pms.entity.Plan;
 import org.qianrenxi.pms.entity.Product;
 import org.qianrenxi.pms.entity.Project;
 import org.qianrenxi.pms.entity.Requirement;
 import org.qianrenxi.pms.service.BuildService;
+import org.qianrenxi.pms.service.DocLibService;
 import org.qianrenxi.pms.service.ModuleService;
 import org.qianrenxi.pms.service.PlanService;
 import org.qianrenxi.pms.service.ProductService;
@@ -33,6 +37,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.common.collect.ImmutableList;
 
 @RestController
 @RequestMapping("/api/products")
@@ -54,6 +60,9 @@ public class ProductApiController {
 	
 	@Autowired
 	private BuildService buildService;
+	
+	@Autowired
+	private DocLibService docLibService;
 
 	@ModelAttribute("productForUpdate")
 	public Product productForUpdate(@RequestParam(name = "id", required = false) Long id) {
@@ -183,5 +192,30 @@ public class ProductApiController {
 		Type type = new TypeToken<List<BuildDto>>() {
 		}.getType();
 		return ModelMapperUtils.map(builds, type);
+	}
+	
+	/**
+	 * 产品文档库
+	 * @param productId
+	 * @return
+	 */
+	@RequestMapping(value = "/{id}/docLibs", method = RequestMethod.GET)
+	public List<DocLibDto> docLibs(@PathVariable("id") Long productId) {
+		List<DocLib> docLibs = docLibService.findByProduct(productId);
+		
+		if (CollectionUtils.isEmpty(docLibs)){
+			Product product = new Product();
+			product.setId(productId);
+			DocLib docLib = new DocLib();
+			docLib.setCode("product-lib-"+productId);
+			docLib.setName("产品主库");
+			docLib.setProduct(product);
+			docLibService.save(docLib);
+			docLibs = ImmutableList.of(docLib);
+		}
+		
+		Type type = new TypeToken<List<DocLibDto>>() {
+		}.getType();
+		return ModelMapperUtils.map(docLibs, type);
 	}
 }
