@@ -2,10 +2,21 @@ package org.qianrenxi.pms.dto;
 
 import java.util.Date;
 
+import org.qianrenxi.pms.entity.DocLib.DocLibSourceType;
+import org.qianrenxi.pms.entity.DocLib.DocLibType;
+
 public class DocLibDto {
 	private Long id;
 	private String name;
 	private String code;
+	
+	private DocLibType type;
+	private DocLibSourceType sourceType;
+	
+	private String uri;
+	private String username;
+	private String password;
+	private String branch;
 
 	// private Product product;
 	private Long productId;
@@ -145,5 +156,53 @@ public class DocLibDto {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public DocLibType getType() {
+		return type;
+	}
+
+	public void setType(DocLibType type) {
+		this.type = type;
+	}
+
+	public DocLibSourceType getSourceType() {
+		return sourceType;
+	}
+
+	public void setSourceType(DocLibSourceType sourceType) {
+		this.sourceType = sourceType;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getBranch() {
+		return branch;
+	}
+
+	public void setBranch(String branch) {
+		this.branch = branch;
 	}
 }

@@ -21,6 +21,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.qianrenxi.core.system.enity.User;
 import org.qianrenxi.core.system.repository.jpa.UserRepository;
+import org.qianrenxi.core.system.service.LdapService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class SimpleShiroRealm extends AuthorizingRealm {
 	private UserRepository userRepository;
 	// private UserService userService;
 	@Autowired
-	private LdapTemplate ldapTemplate;
+	private LdapService ldapService;
 	
 	/**
 	 * 授权
@@ -70,7 +71,7 @@ public class SimpleShiroRealm extends AuthorizingRealm {
 		User user = userRepository.findByUsername(token.getUsername());
 		if(user == null) {
 			String password = new String(token.getPassword());
-			user = authByLdap(token.getUsername(), password);
+			user = ldapService.authByLdap(token.getUsername(), password);
 			
 			if (user == null) {
 				throw new AuthenticationException("用户名不存在");
@@ -92,34 +93,4 @@ public class SimpleShiroRealm extends AuthorizingRealm {
 		super.checkPermission(principal, permission);
 	}
 	
-	private User authByLdap(String username, String password){
-		try {
-			ContainerCriteria containerCriteria = LdapQueryBuilder.query().where("cn").is(username);
-			List<User> users = ldapTemplate.search(containerCriteria, new UserAttributesMapper());
-			if (users != null && !users.isEmpty()) {
-				ldapTemplate.authenticate(containerCriteria, password);
-				
-				System.out.println(users.get(0));
-				return users.get(0);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			//throw e;
-		}
-		return null;
-	}
-	
-	private class UserAttributesMapper implements AttributesMapper<User> {
-		@Override
-		public User mapFromAttributes(Attributes attrs) throws NamingException {
-			User user = new User();
-			user.setUsername((String)attrs.get("cn").get());
-			user.setEmail((String)attrs.get("mail").get());
-			user.setPhoneNumber((String)attrs.get("mobile").get());
-			user.setFirstName((String)attrs.get("givenName").get());
-			user.setLastName((String)attrs.get("sn").get());
-			user.setDisplayName((String)attrs.get("givenName").get() + (String)attrs.get("sn").get());
-			return user;
-		}
-	}
 }

@@ -1,6 +1,8 @@
 package org.qianrenxi.pms.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -13,12 +15,30 @@ import org.qianrenxi.core.system.enity.Repairable;
 @Table(name="pms_doc_lib")
 public class DocLib extends Repairable {
 	private static final long serialVersionUID = -8543054674321099322L;
+	
+	public enum DocLibType {
+		PRODUCT, PROJECT, CUSTOM
+	}
+	
+	public enum DocLibSourceType {
+		SIMPLE, FILE_SYSTEM, SVN, GIT
+	}
 
 	@Id
 	@GeneratedValue
 	private Long id;
 	private String name;
 	private String code;
+	
+	@Enumerated(EnumType.STRING)
+	private DocLibType type;
+	@Enumerated(EnumType.STRING)
+	private DocLibSourceType sourceType;
+	
+	private String uri;
+	private String username;
+	private String password;
+	private String branch;
 	
 	@ManyToOne()
 	@JoinColumn(name="product_id")
@@ -56,6 +76,42 @@ public class DocLib extends Repairable {
 	}
 	public void setCode(String code) {
 		this.code = code;
+	}
+	public DocLibType getType() {
+		return type;
+	}
+	public void setType(DocLibType type) {
+		this.type = type;
+	}
+	public DocLibSourceType getSourceType() {
+		return sourceType;
+	}
+	public void setSourceType(DocLibSourceType sourceType) {
+		this.sourceType = sourceType;
+	}
+	public String getUri() {
+		return uri;
+	}
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getBranch() {
+		return branch;
+	}
+	public void setBranch(String branch) {
+		this.branch = branch;
 	}
 
 }
