@@ -59,6 +59,19 @@ public class IssueDto {
 	private String lastModifiedByUsername;
 	private String lastModifiedByDisplayName;
 	private Date lastModifiedDate;
+	
+	private String taskName;
+
+	// private Build effectBuild;
+
+	// private User resolvedBy;
+	private Long resolvedById;
+	private String resolvedByUsername;
+	private String resolvedByDisplayName;
+	private Date resolvedDate;
+	// private Build resolvedBuild;
+	private String resolution;
+	private String remark;
 
 	public Long getId() {
 		return id;
@@ -323,19 +336,6 @@ public class IssueDto {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-
-	private String taskName;
-
-	// private Build effectBuild;
-
-	// private User resolvedBy;
-	private Long resolvedById;
-	private String resolvedByUsername;
-	private String resolvedByDisplayName;
-	private Date resolvedDate;
-	// private Build resolvedBuild;
-	private String resolution;
-	private String remark;
 
 	public Long getCreatedById() {
 		return createdById;

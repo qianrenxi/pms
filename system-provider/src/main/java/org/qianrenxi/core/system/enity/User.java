@@ -54,6 +54,8 @@ public class User extends Repairable {
 	@Enumerated(EnumType.STRING)
 	private AccountStatus status;
 	
+	private String avatar;
+	
 	@ManyToOne
 	@JoinColumn(name = "site_id")
 	private Site site;
@@ -189,6 +191,14 @@ public class User extends Repairable {
 
 	public void setStatus(AccountStatus status) {
 		this.status = status;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 
 }

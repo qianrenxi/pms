@@ -1,6 +1,6 @@
 package org.qianrenxi.core.system.dto;
 
-public class UserDto {
+public class UserInfoDto {
 
 	private Long id;
 	private String username;
@@ -10,9 +10,6 @@ public class UserDto {
 	private String lastName;
 	private String displayName;
 	private String avatar;
-	
-	private UserInfoDto createdBy;
-	private UserInfoDto lastModifiedBy;
 	
 	public Long getId() {
 		return id;
@@ -56,23 +53,12 @@ public class UserDto {
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
-	public UserInfoDto getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(UserInfoDto createdBy) {
-		this.createdBy = createdBy;
-	}
-	public UserInfoDto getLastModifiedBy() {
-		return lastModifiedBy;
-	}
-	public void setLastModifiedBy(UserInfoDto lastModifiedBy) {
-		this.lastModifiedBy = lastModifiedBy;
-	}
 	public String getAvatar() {
 		return avatar;
 	}
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
+	
 	
 }
